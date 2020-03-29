@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Text, Button, TouchableOpacity } from "react-native";
-import colors from "../values/colors";
-import dimens, { sdp } from "../values/dimens";
-import styles from "../values/styles";
+import colors from "src/values/colors";
+import dimens, { sdp } from "src/values/dimens";
+import styles from "src/values/styles";
 
 class ButtonApp extends Component {
   render() {

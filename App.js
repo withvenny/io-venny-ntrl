@@ -1,62 +1,133 @@
-import { AppLoading } from 'expo';
-import { Asset } from 'expo-asset';
-import * as Font from 'expo-font';
-import React, { useState } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow
+ */
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  AsyncStorage,
+  Platform,
+  StatusBar,
+  TouchableOpacity
+} from "react-native";
+import {
+  NetInfo
+} from "react-native-netinfo";
+import React, {Component} from 'react';
+import SplashScreen from 'react-native-splash-screen';
+import dimens, { sdp } from "src/values/dimens";
+import mstyles from "src/values/styles";
+import ButtonApp from "src/uiComponents/ButtonApp";
+import { StackActions, NavigationActions } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
+import RouterComponent from "src/router_component";
+import SharedManager from 'src/sharedmanager';
+import store from 'src/store'
+import { Provider } from 'react-redux';
 
-import AppNavigator from 'src/navigation/AppNavigator';
+//
+const instructions = Platform.select({
+  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+  android:
+    'Double tap R on your keyboard to reload,\n' +
+    'Shake or press menu button for dev menu',
+});
 
-export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = useState(false);
+//
+var _nav;
 
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
+//
+type Props = {};
+
+//
+const MyStatusBar = ({ backgroundColor, ...props }) => (
+  <View style={[styles.statusBar, { backgroundColor }]}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+  </View>
+);
+
+//
+export default class App extends Component<Props> {
+
+  //
+  constructor(props) {
+    super(props);
+    _this = this;
+    _nav = props.navigation;
+    this.state = {
+      name:  "",
+      password:  "",
+    };
+  }
+
+  //
+  render() {
     return (
-      <AppLoading
-        startAsync={loadResourcesAsync}
-        onError={handleLoadingError}
-        onFinish={() => handleFinishLoading(setLoadingComplete)}
-      />
-    );
-  } else {
-    return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </View>
+		<Provider store={store}>
+		      <View style={styles.container}>
+		                <MyStatusBar backgroundColor="black" barStyle="light-content" style={styles.statusBar} />
+		                <RouterComponent />
+		            </View>
+		</Provider>
+
     );
   }
+
+  //
+  UNSAFE_componentDidMount() {
+
+    NetInfo.isConnected.fetch().then(isConnected => {
+      
+      console.log('First, is ' + (isConnected ? 'online' : 'offline'));
+    
+    });
+
+    NetInfo.isConnected.addEventListener('connectionChange', this.networkConnectionChange);
+  
+  }
+
+  //
+  networkConnectionChange = (isConnected) => {
+
+  };
+
 }
 
-async function loadResourcesAsync() {
-  await Promise.all([
-    Asset.loadAsync([
-      require('src/assets/images/robot-dev.png'),
-      require('src/assets/images/robot-prod.png'),
-    ]),
-    Font.loadAsync({
-      // This is the font that we are using for our tab bar
-      ...Ionicons.font,
-      // We include SpaceMono because we use it in HomeScreen.js. Feel free to
-      // remove this if you are not using it in your app
-      'space-mono': require('src/assets/fonts/SpaceMono-Regular.ttf'),
-    }),
-  ]);
-}
+//
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
-function handleLoadingError(error) {
-  // In this case, you might want to report the error to your error reporting
-  // service, for example Sentry
-  console.warn(error);
-}
+//
+const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 
-function handleFinishLoading(setLoadingComplete) {
-  setLoadingComplete(true);
-}
-
+//
 const styles = StyleSheet.create({
+
+  //
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+      flex: 1,
   },
+
+  //
+  statusBar: {
+      height: STATUSBAR_HEIGHT,
+  },
+  
+  //
+  appBar: {
+      backgroundColor: '#79B45D',
+      height: APPBAR_HEIGHT,
+  },
+
+  //
+  content: {
+      flex: 1,
+      backgroundColor: '#33373B',
+  },
+
 });

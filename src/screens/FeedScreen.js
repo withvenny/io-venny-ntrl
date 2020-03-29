@@ -21,8 +21,8 @@ export default class Project extends Component {
    }
 
    YellowBox.ignoreWarnings([
-    'Warning: componentWillMount is deprecated',
-    'Warning: componentWillReceiveProps is deprecated',
+    'Warning: UNSAFE_componentWillMount is deprecated',
+    'Warning: UNSAFE_componentWillReceiveProps is deprecated',
   ]);
 
  }
