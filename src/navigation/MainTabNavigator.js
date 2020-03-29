@@ -3,12 +3,12 @@ import { Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-import TabBarIcon from '../components/TabBarIcon';
-import FeedScreen from '../screens/FeedScreen';
-import DiscoverScreen from '../screens/DiscoverScreen';
-import ThreadsScreen from '../screens/ThreadsScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import ActionBarScreen from '../screens/ActionBarScreen';
+import TabBarIcon from 'src/components/TabBarIcon';
+import FeedScreen from 'src/screens/FeedScreen';
+import DiscoverScreen from 'src/screens/DiscoverScreen';
+import ThreadsScreen from 'src/screens/ThreadsScreen';
+import ProfileScreen from 'src/screens/ProfileScreen';
+import ActionBarScreen from 'src/screens/ActionBarScreen';
 
 const config = Platform.select({web: { headerMode: 'screen' },default: {},});
 
